@@ -4,11 +4,14 @@ import { useSnackbar } from "notistack";
 import formatHttpApiError from "../helpers/formatHttpApiError";
 import { AuthContext } from "../contexts/AuthContextProvider";
 
+import getCommonOptions from "../helpers/axios/getCommonOption";
+
 export default function useRequestAuth() {
   const [loading, setLoading] = useState(false);
+  const [logoutPending, setLogoutPending] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const [error, setError] = useState(null);
-  const { setIsAuthenticated } = useContext(AuthContext);
+  const { setIsAuthenticated, setUser  } = useContext(AuthContext);
 
   const handleRequestError = useCallback(
     (err) => {
@@ -59,9 +62,26 @@ export default function useRequestAuth() {
     [handleRequestError, setLoading, setIsAuthenticated]
   );
 
+  const logout = useCallback(() => {
+    setLogoutPending(true);
+    axios.post("/api/auth/token/logout/", null, getCommonOptions())
+        .then(() => {
+            localStorage.removeItem("authToken");
+            setLogoutPending(false);
+            setUser(null);
+            setIsAuthenticated(false);
+        })
+        .catch((err) => {
+            setLogoutPending(false);
+            handleRequestError(err);
+        })
+}, [handleRequestError, setLogoutPending, setIsAuthenticated, setUser])
+
+
   return {
     register,
     login,
+    logout,
     loading,
     error,
   };

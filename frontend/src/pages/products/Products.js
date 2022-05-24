@@ -1,17 +1,30 @@
 import React, { useEffect } from "react";
-import Button from "@mui/material/Button";
-import { Box } from "@mui/material";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
+import {
+  Button,
+  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  CircularProgress,
+} from "@mui/material";
 import { Link } from "react-router-dom";
 import useRequestResource from "../../hooks/useRequestResource";
+import useRequestAuth from "../../hooks/useRequestAuth";
 
 export default function Products() {
   const { getResourceList, getResource, resourceList } = useRequestResource({
     endpoint: "products",
   });
+
+  const { logout, logoutPending } = useRequestAuth();
+
+  const handleLogout = () => {
+    logout();
+  };
 
   useEffect(() => {
     getResourceList();
@@ -34,29 +47,57 @@ export default function Products() {
         >
           Add Product
         </Button>
-        <Box padding={10} flexDirection="row">
-          {resourceList.results.map((product) => {
-            return (
-              <Card
-                key={product.id}
-                sx={{ maxWidth: 345, backgroundColor: "red" }}
-              >
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {product.product_name}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {product.product_description}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  {/* <Button size="small">Edit</Button>
-                    <Button size="small">Delete</Button> */}
-                </CardActions>
-              </Card>
-            );
-          })}
-        </Box>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 360 }} size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell align="left">Product Name</TableCell>
+                <TableCell align="left">Product Description</TableCell>
+                <TableCell align="right">Created At</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {resourceList.results.map((product) => {
+                return (
+                  <TableRow key={product.id}>
+                    <TableCell align="left">{product.product_name}</TableCell>
+                    <TableCell align="left">
+                      {product.product_description}
+                    </TableCell>
+                    <TableCell align="right">
+                      {new Date(product.created_at).toLocaleString()}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Button
+          component={Link}
+          variant="contained"
+          disableElevation
+          to="/auth/login"
+          onClick={handleLogout}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {logoutPending === true ? (
+              <CircularProgress
+                size={20}
+                sx={{
+                  mr: 2,
+                }}
+              />
+            ) : null}
+          </Box>
+          Logout
+        </Button>
       </Box>
     </div>
   );
