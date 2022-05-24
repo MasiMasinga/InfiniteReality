@@ -33,7 +33,7 @@ function App() {
                 </Route>
 
                 <Route element={<RequireNotAuth />}>
-                  <Route path="/" exact  element={<SignUp />} />
+                  <Route path="/" exact element={<SignUp />} />
                   <Route path="/auth/login" element={<Login />} />
                 </Route>
               </Routes>

@@ -11,7 +11,7 @@ export default function useRequestAuth() {
   const [logoutPending, setLogoutPending] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const [error, setError] = useState(null);
-  const { setIsAuthenticated, setUser  } = useContext(AuthContext);
+  const { setIsAuthenticated, setUser } = useContext(AuthContext);
 
   const handleRequestError = useCallback(
     (err) => {
@@ -64,23 +64,24 @@ export default function useRequestAuth() {
 
   const logout = useCallback(() => {
     setLogoutPending(true);
-    axios.post("/api/auth/token/logout/", null, getCommonOptions())
-        .then(() => {
-            localStorage.removeItem("authToken");
-            setLogoutPending(false);
-            setUser(null);
-            setIsAuthenticated(false);
-        })
-        .catch((err) => {
-            setLogoutPending(false);
-            handleRequestError(err);
-        })
-}, [handleRequestError, setLogoutPending, setIsAuthenticated, setUser])
-
+    axios
+      .post("/api/auth/token/logout/", null, getCommonOptions())
+      .then(() => {
+        localStorage.removeItem("authToken");
+        setLogoutPending(false);
+        setUser(null);
+        setIsAuthenticated(false);
+      })
+      .catch((err) => {
+        setLogoutPending(false);
+        handleRequestError(err);
+      });
+  }, [handleRequestError, setLogoutPending, setIsAuthenticated, setUser]);
 
   return {
     register,
     login,
+    logoutPending,
     logout,
     loading,
     error,

@@ -11,19 +11,22 @@ import {
   TableRow,
   CircularProgress,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useRequestResource from "../../hooks/useRequestResource";
 import useRequestAuth from "../../hooks/useRequestAuth";
 
 export default function Products() {
-  const { getResourceList, getResource, resourceList } = useRequestResource({
+  const { getResourceList, resourceList } = useRequestResource({
     endpoint: "products",
   });
 
   const { logout, logoutPending } = useRequestAuth();
+  const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = (values) => {
+    logout(values, () => {
+      navigate("/auth/login");
+    });
   };
 
   useEffect(() => {

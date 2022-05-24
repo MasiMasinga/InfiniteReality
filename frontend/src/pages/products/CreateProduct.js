@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { Formik } from "formik";
 import { Grid, TextField, Typography, Paper, Button, Box } from "@mui/material";
 import * as yup from "yup";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useRequestResource from "../../hooks/useRequestResource";
 
 const validationSchema = yup.object({
   product_name: yup
     .string()
     .required("Product Name is required")
-    .max(100, "Max length is 100"),
+    .max(50, "Max length is 50"),
   product_description: yup.string().required("Product Description is required"),
 });
 
@@ -19,7 +19,7 @@ const CreateProduct = () => {
     resourceLabel: "Product",
   });
 
-  const [initialValues, setInitialValues] = useState({
+  const [initialValues] = useState({
     product_name: "",
     product_description: "",
   });

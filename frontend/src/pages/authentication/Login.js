@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Avatar from "@mui/material/Avatar";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
@@ -9,23 +9,24 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Formik } from "formik";
 import * as yup from "yup";
-import useRequestAuth from '../../hooks/useRequestAuth';
-import { Link, useNavigate } from 'react-router-dom';
+import useRequestAuth from "../../hooks/useRequestAuth";
+import { Link, useNavigate } from "react-router-dom";
 
 const validationSchema = yup.object({
-    username: yup.string().required("Email Address / Username is required"),
-    password: yup.string().required("Password is required")
-})
+  username: yup.string().required("Email Address / Username is required"),
+  password: yup.string().required("Password is required"),
+});
 
 const Login = () => {
-    const { login, loading } = useRequestAuth();
-    const navigate = useNavigate();
+  const { login, loading } = useRequestAuth();
+  const navigate = useNavigate();
 
-    const handleSubmit = (values) => {
-      login(values, () => {
-        navigate("/products");
-      });
-    };
+  const handleSubmit = (values) => {
+    login(values, () => {
+      navigate("/products");
+    });
+  };
+
 
   return (
     <Container component="main" maxWidth="xs">
@@ -44,10 +45,13 @@ const Login = () => {
           Login
         </Typography>
         <Formik
-          validationSchema={validationSchema} validateOnBlur={false} onSubmit={handleSubmit} initialValues={{
+          validationSchema={validationSchema}
+          validateOnBlur={false}
+          onSubmit={handleSubmit}
+          initialValues={{
             username: "",
-            password: ""
-        }}
+            password: "",
+          }}
         >
           {(formik) => {
             return (
