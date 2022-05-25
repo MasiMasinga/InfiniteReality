@@ -11,7 +11,7 @@ export default function RequireAuth() {
   }
 
   if (isAuthenticated === true) {
-    return <Navigate to="/" />;
+    return <Navigate to="/products" />;
   }
 
   return <Outlet />;
