@@ -50,7 +50,7 @@ export default function Products() {
         >
           Add Product
         </Button>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{ padding: 10 }} >
           <Table sx={{ minWidth: 360 }} size="small">
             <TableHead>
               <TableRow>
@@ -76,31 +76,33 @@ export default function Products() {
             </TableBody>
           </Table>
         </TableContainer>
-        <Button
-          component={Link}
-          variant="contained"
-          disableElevation
-          to="/auth/login"
-          onClick={handleLogout}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
+        <Box padding={10}>
+          <Button
+            component={Link}
+            variant="contained"
+            disableElevation
+            to="/auth/login"
+            onClick={handleLogout}
           >
-            {logoutPending === true ? (
-              <CircularProgress
-                size={20}
-                sx={{
-                  mr: 2,
-                }}
-              />
-            ) : null}
-          </Box>
-          Logout
-        </Button>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {logoutPending === true ? (
+                <CircularProgress
+                  size={20}
+                  sx={{
+                    mr: 2,
+                  }}
+                />
+              ) : null}
+            </Box>
+            Logout
+          </Button>
+        </Box>
       </Box>
     </div>
   );
